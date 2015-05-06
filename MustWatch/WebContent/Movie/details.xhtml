@@ -1,0 +1,102 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/resources/decorator.xhtml">
+
+    <ui:define name="title"><h:outputText value="#{msgs['title.home']}" /></ui:define>
+    <ui:define name="submenu">
+    <!-- Sub-menu -->
+	<div id="sub-navigation">
+		<ul>
+		    <li><a href="#">#{manageMoviesController.getParamMovie(param['id']).original_title}</a></li>
+		</ul>
+		<div class="cl">&nbsp;</div>
+	</div>
+	<!-- end Sub-Menu -->
+        
+    </ui:define>
+    
+    <ui:define name="body">
+    	<br />
+    	<br />
+    	
+		    
+		 <p:panelGrid style="margin-top:20px">
+		   		
+				
+				<p:row>
+		   			<p:column rowspan="5">
+		        		<p:graphicImage  value="../resources/css/images/#{manageMoviesController.getParamMovie(param['id']).image}" />
+		        	</p:column>
+		        	<p:column >
+		        		<h:outputText value="Original Title:" />
+		        	</p:column>
+		        	<p:column >
+		        		<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).original_title}" />
+		        	</p:column>
+		        	<p:column rowspan="2" colspan="3">
+		        		<h:outputText value="Resume: #{manageMoviesController.getParamMovie(param['id']).resume}" />
+		        	</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column >
+		        		<h:outputText value="Length Time:" />
+		        	</p:column>
+		        	<p:column >
+		        		<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).lenght}" />
+		        	</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column >
+		        		<h:outputText value="Portuguese Title:" />
+		        	</p:column>
+		        	<p:column >
+		        		<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).portuguese_title}" />
+		        	</p:column>
+		        	<p:column colspan="1">
+		        		<h:outputText value="Rating:" />
+		        	</p:column >
+		        	<p:column colspan="2">
+		        		<p:rating value="#{manageMoviesController.rating}" stars="5" cancel="false"/>
+		        	</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column >
+		        		<h:outputText value="Release Date:" />
+		        	</p:column>
+		        	<p:column >
+		        		<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).releaseDate}"/>
+		        	</p:column>
+		        	<p:column rowspan="2" colspan="1">
+		        		<h:outputText value="Comment:" />
+		        	</p:column>
+		        	<p:column rowspan="2" colspan="1">
+		        		<p:inputTextarea value="#{manageMoviesController.comment}" cols="49"></p:inputTextarea>
+		        	</p:column>
+		        	<p:column rowspan="2" colspan="1">
+		        		<p:commandButton value="Rate It!" action="#{manageMoviesController.doRate}"></p:commandButton>
+		        	</p:column>
+				</p:row>
+				
+				<p:row>
+					<p:column >
+		        		<h:outputText value="Director:" />
+		        	</p:column>
+		        	<p:column >
+		        		<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).director.name}" />
+		        	</p:column>
+				</p:row>
+				    
+				 </p:panelGrid>
+		    
+		
+ 		
+    </ui:define>
+    
+</ui:composition>

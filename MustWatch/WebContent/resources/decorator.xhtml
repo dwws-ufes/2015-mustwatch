@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui">
+      
+      
+<f:view contentType="text/html">
+	<h:head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<h:outputScript name="js/nemo-utils.js" />
+		<h:outputScript name="js/jquery-func.js" />
+		<link href='http://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css' />
+		<title><h:outputText value="MustWatch :: " /> <ui:insert name="title" /></title>
+		<ui:insert name="head" />
+	</h:head>
+
+	<h:body>
+		<h:outputStylesheet name="css/style.css" />
+		<h:outputStylesheet name="css/nemo-utils.css" />
+		
+		<!-- Ajax status indicator: -->
+		<div id="ajaxStatus">
+			<h:form id="statusForm">
+				<p:ajaxStatus>
+					<f:facet name="start">
+						<h:graphicImage alt="#{msgs['text.ajax.loading.alt']}" title="#{msgs['text.ajax.loading']}"
+							url="/resources/templates/default/icons/ajaxstatus-start.gif" />
+					</f:facet>
+					<f:facet name="error">
+						<h:graphicImage alt="#{msgs['text.ajax.error.alt']}" title="#{msgs['text.ajax.error']}"
+							url="/resources/templates/default/icons/ajaxstatus-error.png" />
+					</f:facet>
+					<f:facet name="complete">
+						<h:graphicImage alt="#{msgs['text.ajax.complete.alt']}" title="#{msgs['text.ajax.complete']}"
+							url="/resources/templates/default/icons/ajaxstatus-complete.png" />
+					</f:facet>
+				</p:ajaxStatus>
+			</h:form>
+		</div>
+		
+		<!-- Shell -->
+		<div id="shell">
+			<!-- Header -->
+			<div id="header">
+				<h1 id="logo"><a href="#">Must Watch</a></h1>
+				<div class="social">
+					<span>FOLLOW US ON:</span>
+					<ul>
+					    <li><a class="twitter" href="#">twitter</a></li>
+					    <li><a class="facebook" href="#">facebook</a></li>
+					    <li><a class="vimeo" href="#">vimeo</a></li>
+					    <li><a class="rss" href="#">rss</a></li>
+					</ul>
+				</div>
+				
+				<!-- Navigation -->
+				<div id="navigation">
+					<ul>
+					    <li><a class="active" href="#">HOME</a></li>
+					    <li><a href="#">SIGN IN</a></li>
+					    <li><a href="#">SIGN UP</a></li>
+					</ul>
+				</div>
+				<!-- end Navigation -->
+				
+				<ui:insert name="submenu" />
+				
+			</div>
+			<!-- end Header -->
+			
+			<!-- Main -->
+			
+			<ui:insert name="body" />
+			
+			
+				
+			<!-- Footer -->
+			<div id="footer">
+				<p>
+					<a href="/MustWatch/index.faces">HOME</a> <span>|</span>
+				</p>
+				<p> &copy; 2015 Must Watch, LLC. All Rights Reserved.  Designed by <a href="http://chocotemplates.com" title="The Sweetest CSS Templates WorldWide">ChocoTemplates.com</a></p>
+			</div>
+			<!-- end Footer -->
+		</div>
+		<!-- end Shell -->
+	</h:body>
+</f:view>
+</html>

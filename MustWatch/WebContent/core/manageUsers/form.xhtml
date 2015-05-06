@@ -1,0 +1,129 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                template="/resources/decorator.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="#{msgs['manageUsers.title.create']}" rendered="#{(! manageUsersController.readOnly) and (manageUsersController.selectedEntity.id == null)}" />
+        <h:outputText value="#{msgs['manageUsers.title.update']}" rendered="#{(! manageUsersController.readOnly) and (manageUsersController.selectedEntity.id != null)}" />
+        <h:outputText value="#{msgs['manageUsers.title.retrieve']}" rendered="#{manageUsersController.readOnly}" />
+    </ui:define>
+
+	  <ui:define name="submenu">
+    <div id="sub-navigation">
+		<ul>
+		    <li><a href="/MustWatch/core/manageActors/list.faces">Actors</a></li>
+		    <li><a href="/MustWatch/core/manageMovies/list.faces">Movies</a></li>
+		    <li><a href="/MustWatch/core/manageDirectors/list.faces">Directors</a></li>
+		    <li><a href="/MustWatch/core/manageDistributionCompanies/list.faces">Distribution Companies</a></li>
+		    <li><a href="/MustWatch/core/manageUsers/list.faces">Users</a></li>
+		</ul>
+		<div class="cl">&nbsp;</div>
+	</div>
+	<!-- end Sub-Menu -->
+    </ui:define>
+    
+    <ui:define name="body">
+        <h1>
+            <h:outputText value="#{msgs['manageUsers.title.create']}" rendered="#{(! manageUsersController.readOnly) and (manageUsersController.selectedEntity.id == null)}" />
+            <h:outputText value="#{msgs['manageUsers.title.update']}" rendered="#{(! manageUsersController.readOnly) and (manageUsersController.selectedEntity.id != null)}" />
+            <h:outputText value="#{msgs['manageUsers.title.retrieve']}" rendered="#{manageUsersController.readOnly}" />
+        </h1>
+
+        <div class="crud">
+            <ui:decorate template="/resources/form.xhtml">
+                <h:form id="form">
+                    <p:hotkey bind="#{msgs['crud.hotkey.focusFirstField']}" handler="findObjectById('form:name').focus();" />
+
+                    <h:panelGroup id="nameField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:param name="fieldName" value="form:name" />
+                            
+                            <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.name']}" /></ui:define>
+                            <p:inputText id="name" value="#{manageUsersController.selectedEntity.name}" size="50" required="true" disabled="#{manageUsersController.readOnly}">
+                                <p:ajax event="blur" update="nameField" />
+                            </p:inputText>
+                        </ui:decorate>
+                    </h:panelGroup>
+
+                     <h:panelGroup id="sexField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:param name="fieldName" value="form:sex" />
+                            
+                            <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.sex']}" /></ui:define>
+                            <p:selectOneMenu id="sex" value="#{manageUsersController.selectedEntity.sex}" style="width:125px" required="true" disabled="#{manageUsersController.readOnly}">
+					            <f:selectItem itemLabel="Select One" itemValue="" />
+					            <f:selectItem itemLabel="Feminino" itemValue="Feminino" />
+					            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />
+					        </p:selectOneMenu>
+                        </ui:decorate>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="cpfField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:param name="fieldName" value="form:cpf" />
+                            
+                            <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.cpf']}" /></ui:define>
+                            <p:inputText id="cpf" value="#{manageUsersController.selectedEntity.cpf}" size="50" required="true" disabled="#{manageUsersController.readOnly}">
+                                <p:ajax event="blur" update="cpfField" />
+                            </p:inputText>
+                        </ui:decorate>
+                    </h:panelGroup>
+
+					<h:panelGroup id="birthDateField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:param name="fieldName" value="form:birthDate" />
+                            
+                            <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.birthDate']}" /></ui:define>
+                            <p:inputMask id="birthDate" mask="99/99/9999" value="#{manageUsersController.selectedEntity.birthDate}" size="50" required="true" disabled="#{manageUsersController.readOnly}">
+                            	<f:convertDateTime type="date" pattern="#{msgs['format.date.java']}" />
+                                <p:ajax event="blur" update="birthDateField" />
+                            </p:inputMask><h:outputText value=" (#{msgs['format.date.label']})" />
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                     <h:panelGroup id="emailField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:param name="fieldName" value="form:email" />
+                            
+                            <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.email']}" /></ui:define>
+	  							<p:inputText id="email" value="#{manageUsersController.selectedEntity.email}" pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" size="50" required="true" disabled="#{manageUsersController.readOnly}" validatorMessage="#{'manageUsers.form.email'} is not valid"/>
+                        </ui:decorate>
+                    </h:panelGroup>
+
+					<h:panelGroup id="passwordField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.password']}" /></ui:define>
+                            <h:inputSecret id="password" value="#{manageUsersController.selectedEntity.password}" size="32" required="true" disabled="#{manageUsersController.readOnly}" mask="#{manageUsersController.password1}"  />
+                        </ui:decorate>
+                    </h:panelGroup>
+
+                    <ui:decorate template="/resources/formbutton.xhtml">
+                        <h:panelGroup rendered="#{! manageUsersController.readOnly}">
+                            <p:commandButton action="#{manageUsersController.list}" value="#{msgs['crud.button.cancel']}" immediate="true" icon="buttonCancel" />
+                            <p:commandButton action="#{manageUsersController.save}" value="#{msgs['crud.button.save']}" icon="buttonOk" />
+         
+                        </h:panelGroup>
+                        <h:panelGroup rendered="#{manageUsersController.readOnly}">
+                            <p:commandButton action="#{manageUsersController.list}" value="#{msgs['crud.button.back']}" immediate="true" icon="buttonBack" />
+                            <p:hotkey bind="#{msgs['crud.hotkey.backToList']}" action="#{manageUsersController.list}" immediate="true" />
+                        </h:panelGroup>
+                    </ui:decorate>
+                </h:form>
+            </ui:decorate>
+        </div>
+    </ui:define>
+
+    <ui:define name="help">
+        <h4><h:outputText value="#{msgs['text.hotkeys']}" />:</h4>
+        <ul>
+            <li><b><h:outputText value="#{msgs['crud.hotkey.focusFirstField']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.focusFirstField']}" />;</li>
+            <li><b><h:outputText value="#{msgs['crud.hotkey.backToList']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.backToList']}" />;</li>
+            <li><b><h:outputText value="#{msgs['crud.hotkey.save']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.save']}" />.</li>
+        </ul>
+    </ui:define>
+</ui:composition>
