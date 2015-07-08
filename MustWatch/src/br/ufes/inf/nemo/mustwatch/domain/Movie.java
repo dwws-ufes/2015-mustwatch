@@ -1,7 +1,10 @@
 package br.ufes.inf.nemo.mustwatch.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
@@ -9,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -16,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,175 +32,242 @@ public class Movie extends PersistentObjectSupport implements Comparable<Movie>{
 	/** Serialization id. */
 	private static final long serialVersionUID = 1L;
 	
-	@Basic
-	@NotNull
+	
+	
 	@Size(max = 300)
 	private String original_title;
 	
-	@Basic
-	@NotNull
+	
+	
 	@Size(max = 300)
 	private String portuguese_title;
 	
-	@Basic
-	@NotNull
+	
+	
 	@Size(max = 500)
 	private String resume ;
 	
-	@Basic
-	@NotNull
+	
+	
 	private Integer lenght;
 	
-	
-	@Column(nullable = false)
-	@Size(max=1)
-	private Integer isRelease;
-	
-	@Basic
-	@NotNull
 	@Size(max = 150)
 	private String image;
 	
 	@Temporal(TemporalType.DATE)
 	private Date releaseDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@NotNull
-	private Director director;
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		      name="movie_director",
+		      joinColumns={@JoinColumn(name="movie_id", referencedColumnName="id")},
+		      inverseJoinColumns={@JoinColumn(name="director_id", referencedColumnName="id")},
+		      uniqueConstraints={@UniqueConstraint(columnNames = {"movie_id", "director_id"})})
+	private Set<Director> directors;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@NotNull
+	@ManyToOne(fetch = FetchType.EAGER)
 	private DistributionCompany distributionCompany;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		      name="movie_country",
+		      joinColumns={@JoinColumn(name="movie_id", referencedColumnName="id")},
+		      inverseJoinColumns={@JoinColumn(name="country_id", referencedColumnName="id")},
+		      uniqueConstraints={@UniqueConstraint(columnNames = {"movie_id", "country_id"})})
 	private Set<Country> countries;
 	
-	@OneToMany(mappedBy="owner")
+	
+	
+	@OneToMany(mappedBy = "movie",fetch = FetchType.EAGER)
 	private Set<Rating> ratings;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		      name="movie_actors",
+		      joinColumns={@JoinColumn(name="movie_id", referencedColumnName="id")},
+		      inverseJoinColumns={@JoinColumn(name="actor_id", referencedColumnName="id")},
+		      uniqueConstraints={@UniqueConstraint(columnNames = {"movie_id", "actor_id"})})
 	private Set<Actor> actors;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+		      name="movie_genres",
+		      joinColumns={@JoinColumn(name="movie_id", referencedColumnName="id")},
+		      inverseJoinColumns={@JoinColumn(name="genre_id", referencedColumnName="id")},
+		      uniqueConstraints={@UniqueConstraint(columnNames = {"movie_id", "genre_id"})})
 	private Set<Genre> genres;
 	 
-	public void setLenght(Integer lenght) {
-		this.lenght = lenght;
-	}
-
-	public String getImage() {
-		return image;
+	
+	public void addRating(Rating rating){
+		if (ratings == null) {
+			ratings = new HashSet<Rating>();
+		}
+		ratings.add(rating);
+		rating.setMovie(this);
 	}
 	
-	public void setImage(String image) {
-		this.image = image;
-	}
+
+//	public void addDirectors(Director director){
+//		boolean alreadyinserted = false;
+//		if (directors == null) {
+//			directors = new ArrayList<Director>();
+//		}
+//		for (Director directorI : directors) {
+//			if(directorI.getName().equals(director.getName())){
+//				alreadyinserted = true;
+//			}
+//		}
+//		if(!alreadyinserted){
+//			directors.add(director);
+//			director.addMovies(this);
+//		}
+//	}
+	
 	
 	public String getOriginal_title() {
 		return original_title;
 	}
-	
+
+
+
 	public void setOriginal_title(String original_title) {
 		this.original_title = original_title;
 	}
-	
+
+
+
 	public String getPortuguese_title() {
 		return portuguese_title;
 	}
-	
+
+
+
 	public void setPortuguese_title(String portuguese_title) {
 		this.portuguese_title = portuguese_title;
 	}
-	
+
+
+
 	public String getResume() {
 		return resume;
 	}
-	
+
+
+
 	public void setResume(String resume) {
 		this.resume = resume;
 	}
-	
-	public int getLenght() {
+
+
+
+	public Integer getLenght() {
 		return lenght;
 	}
-	
-	public void setLenght(int lenght) {
+
+
+
+	public void setLenght(Integer lenght) {
 		this.lenght = lenght;
 	}
+
+
+
 	
-	public void addRating(Rating rating){
-		if( this.ratings != null){
-			ratings.add(rating);
-		}else{
-			HashSet<Rating> HashRatings = new HashSet<Rating>();
-			HashRatings.add(rating);
-		}
-	}
-	
-	public Integer getIsRelease() {
-		return isRelease;
+
+
+	public String getImage() {
+		return image;
 	}
 
-	public void setIsRelease(Integer isRelease) {
-		this.isRelease = isRelease;
+
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
-	public Set<Country> getCountries() {
-		return countries;
-	}
-	
-	public void setCountries(Set<Country> countries) {
-		this.countries = countries;
-	}
-	
-	public Set<Rating> getRatings() {
-		return ratings;
-	}
-	
-	public void setRatings(Set<Rating> ratings) {
-		this.ratings = ratings;
-	}
-	
-	public Director getDirector() {
-		return director;
-	}
-	
-	public void setDirector(Director director) {
-		this.director = director;
-	}
-	
-	public DistributionCompany getDistributionCompany() {
-		return distributionCompany;
-	}
-	
-	public void setDistributionCompany(DistributionCompany distributionCompany) {
-		this.distributionCompany = distributionCompany;
-	}
 
-	public Set<Actor> getActors() {
-		return actors;
-	}
-
-	public void setActors(Set<Actor> actors) {
-		this.actors = actors;
-	}
-
-	public Set<Genre> getGenres() {
-		return genres;
-	}
-
-	public void setGenres(Set<Genre> genres) {
-		this.genres = genres;
-	}
 
 	public Date getReleaseDate() {
 		return releaseDate;
 	}
 
+
+
 	public void setReleaseDate(Date releaseDate) {
 		this.releaseDate = releaseDate;
 	}
+
+
+
 	
+
+
+	public DistributionCompany getDistributionCompany() {
+		return distributionCompany;
+	}
+
+
+
+	public void setDistributionCompany(DistributionCompany distributionCompany) {
+		this.distributionCompany = distributionCompany;
+	}
+
+
+
+	
+
+
+
+	public Set<Director> getDirectors() {
+		return directors;
+	}
+
+
+	public void setDirectors(Set<Director> directors) {
+		this.directors = directors;
+	}
+
+
+	public Set<Country> getCountries() {
+		return countries;
+	}
+
+
+	public void setCountries(Set<Country> countries) {
+		this.countries = countries;
+	}
+
+
+	public Set<Rating> getRatings() {
+		return ratings;
+	}
+
+
+	public void setRatings(Set<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+
+	public Set<Actor> getActors() {
+		return actors;
+	}
+
+
+	public void setActors(Set<Actor> actors) {
+		this.actors = actors;
+	}
+
+
+	public Set<Genre> getGenres() {
+		return genres;
+	}
+
+
+	public void setGenres(Set<Genre> genres) {
+		this.genres = genres;
+	}
+
+
 	@Override
 	public int compareTo(Movie o) {
 		// TODO Auto-generated method stub

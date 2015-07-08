@@ -1,5 +1,8 @@
 package br.ufes.inf.nemo.mustwatch.application;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 

@@ -3,6 +3,7 @@ package br.ufes.inf.nemo.mustwatch.persistence;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import br.ufes.inf.nemo.mustwatch.domain.User;
 import br.ufes.inf.nemo.mustwatch.persistence.UserDAO;
@@ -26,4 +27,13 @@ public class UserJPADAO extends BaseJPADAO<User> implements UserDAO {
 		return entityManager;
 	}
 
+	@Override
+	public User retrieveByLogin(String login) {
+		String jpql = "select u from User u where u.login = '" + login
+				+ "'";
+		TypedQuery<User> query = entityManager.createQuery(jpql,
+				User.class);
+		User u = query.getSingleResult();
+		return u;
+	}
 }

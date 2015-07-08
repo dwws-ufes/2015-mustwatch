@@ -20,25 +20,7 @@
 		<h:outputStylesheet name="css/style.css" />
 		<h:outputStylesheet name="css/nemo-utils.css" />
 		
-		<!-- Ajax status indicator: -->
-		<div id="ajaxStatus">
-			<h:form id="statusForm">
-				<p:ajaxStatus>
-					<f:facet name="start">
-						<h:graphicImage alt="#{msgs['text.ajax.loading.alt']}" title="#{msgs['text.ajax.loading']}"
-							url="/resources/templates/default/icons/ajaxstatus-start.gif" />
-					</f:facet>
-					<f:facet name="error">
-						<h:graphicImage alt="#{msgs['text.ajax.error.alt']}" title="#{msgs['text.ajax.error']}"
-							url="/resources/templates/default/icons/ajaxstatus-error.png" />
-					</f:facet>
-					<f:facet name="complete">
-						<h:graphicImage alt="#{msgs['text.ajax.complete.alt']}" title="#{msgs['text.ajax.complete']}"
-							url="/resources/templates/default/icons/ajaxstatus-complete.png" />
-					</f:facet>
-				</p:ajaxStatus>
-			</h:form>
-		</div>
+		
 		
 		<!-- Shell -->
 		<div id="shell">
@@ -59,8 +41,9 @@
 				<div id="navigation">
 					<ul>
 					    <li><a class="active" href="#">HOME</a></li>
-					    <li><a href="#">SIGN IN</a></li>
-					    <li><a href="#">SIGN UP</a></li>
+					    <li><a href="/MustWatch/login.faces">SIGN IN</a></li>
+					    <li><h:form><h:commandLink action="#{manageUsersController.create}">SIGN UP</h:commandLink></h:form></li>
+					    <li><h:form><h:commandLink action="#{manageSessionsController.logout}">LOGOUT</h:commandLink></h:form></li>
 					</ul>
 				</div>
 				<!-- end Navigation -->

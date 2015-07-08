@@ -35,7 +35,9 @@
 		        		<h:outputText value="Original Title:" />
 		        	</p:column>
 		        	<p:column >
-		        		<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).original_title}" />
+		        		<h:form>
+		        			<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).original_title}" />
+		        		</h:form>
 		        	</p:column>
 		        	<p:column rowspan="2" colspan="3">
 		        		<h:outputText value="Resume: #{manageMoviesController.getParamMovie(param['id']).resume}" />
@@ -62,8 +64,13 @@
 		        		<h:outputText value="Rating:" />
 		        	</p:column >
 		        	<p:column colspan="2">
-		        		<p:rating value="#{manageMoviesController.rating}" stars="5" cancel="false"/>
+		        		<h:form>
+		        			<p:rating value="#{manageMoviesController.rating}" stars="5" cancel="false">
+		        				<p:ajax event="rate" update="@this" />
+		        			</p:rating>
+		        		</h:form>
 		        	</p:column>
+		        	
 				</p:row>
 				
 				<p:row>
@@ -77,24 +84,19 @@
 		        		<h:outputText value="Comment:" />
 		        	</p:column>
 		        	<p:column rowspan="2" colspan="1">
-		        		<p:inputTextarea value="#{manageMoviesController.comment}" cols="49"></p:inputTextarea>
+			        	<h:form>
+			        		<p:inputTextarea value="#{manageMoviesController.comment}" cols="49">
+			        			<p:ajax event="blur" update="@this" ></p:ajax>
+			        		</p:inputTextarea>
+			        	</h:form>
 		        	</p:column>
 		        	<p:column rowspan="2" colspan="1">
-		        		<p:commandButton value="Rate It!" action="#{manageMoviesController.doRate}"></p:commandButton>
+		        		<h:form>
+		        			<p:commandButton value="rate It" action="#{manageMoviesController.doRate}" />
+		        		</h:form>
 		        	</p:column>
 				</p:row>
-				
-				<p:row>
-					<p:column >
-		        		<h:outputText value="Director:" />
-		        	</p:column>
-		        	<p:column >
-		        		<h:outputText value="#{manageMoviesController.getParamMovie(param['id']).director.name}" />
-		        	</p:column>
-				</p:row>
-				    
-				 </p:panelGrid>
-		    
+		    </p:panelGrid>
 		
  		
     </ui:define>

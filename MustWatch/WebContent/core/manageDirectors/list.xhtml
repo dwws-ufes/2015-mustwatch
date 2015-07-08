@@ -27,13 +27,7 @@
     </ui:define>
     
     <ui:define name="body">
-        <h1>
-            <h:outputText value="#{msgs['manageDirectors.title.create']}" rendered="#{(! manageDirectorsController.readOnly) and (manageDirectorsController.selectedEntity.id == null)}" />
-            <h:outputText value="#{msgs['manageDirectors.title.update']}" rendered="#{(! manageDirectorsController.readOnly) and (manageDirectorsController.selectedEntity.id != null)}" />
-            <h:outputText value="#{msgs['manageDirectors.title.retrieve']}" rendered="#{manageDirectorsController.readOnly}" />
-        </h1>
-
-
+    	<h1><h:outputText value="#{msgs['manageDirectors.title']}" /></h1>
         <div class="crud">
             <!-- Filter bar: used to filter the listing (displayed when there is at least one filter available). -->
             <h:form id="filterForm">

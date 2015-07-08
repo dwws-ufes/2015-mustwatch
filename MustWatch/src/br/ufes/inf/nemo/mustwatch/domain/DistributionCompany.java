@@ -5,7 +5,9 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -22,7 +24,7 @@ public class DistributionCompany extends PersistentObjectSupport implements Comp
 	@Size(max = 200)
 	private String name;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "distributionCompany",fetch = FetchType.EAGER)
 	private Set<Movie> movies;
 
 	

@@ -1,16 +1,12 @@
 package br.ufes.inf.nemo.mustwatch.domain;
 
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.ufes.inf.nemo.util.ejb3.persistence.PersistentObjectSupport;
@@ -22,40 +18,30 @@ public class User extends PersistentObjectSupport implements Comparable<User>{
 	/** Serialization id. */
 	private static final long serialVersionUID = 1L;
 	
-	@Basic
-	@Size(max = 200)
-	@Column(nullable = false) 
+	
+	@Size(max = 200) 
 	private String name;
 	
-	@Basic
 	@Size(max = 100)
-	@Column(nullable = false) 
 	private String email;
 	
-	@Basic
 	@Size(max = 32)
-	@Column(nullable = false) 
 	private String sex;
 	
-	@Basic
 	@Size(max = 100)
-	@Column(nullable = false) 
 	private String cpf;
 	
 	
-	@Column(nullable = false) 
 	@Temporal(TemporalType.DATE)
 	private Date birthDate;
 	
-	
-	@Column(nullable = false) 
 	private boolean isAdmin;
 	
-	@Basic
-	@Size(max = 32)
-	@Column(nullable = false) 
+	@Size(max = 32) 
 	private String password;
 	
+	@Size(max = 32) 
+	private String login;
 	
 	@Override
 	public int compareTo(User arg0) {
@@ -135,6 +121,16 @@ public class User extends PersistentObjectSupport implements Comparable<User>{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+
+	public String getLogin() {
+		return login;
+	}
+
+
+	public void setLogin(String login) {
+		this.login = login;
 	}
 	
 	

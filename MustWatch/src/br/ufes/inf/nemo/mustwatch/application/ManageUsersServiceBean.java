@@ -29,4 +29,9 @@ public class ManageUsersServiceBean extends CrudServiceBean<User> implements Man
 		return new User();
 	}
 
+	@Override
+	public User retrieveByLogin(String login) {
+		return userDAO.retrieveByLogin(login);
+	}
+
 }

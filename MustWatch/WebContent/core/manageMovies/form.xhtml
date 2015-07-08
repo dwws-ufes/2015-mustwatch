@@ -31,6 +31,10 @@
     </ui:define>
     
     <ui:define name="body">
+    	<f:event type="preRenderView" listener="#{manageDirectorsController.init}" />
+    	<f:event type="preRenderView" listener="#{manageActorsController.init}" />
+    	<f:event type="preRenderView" listener="#{manageDistributionController.init}" />
+    	<f:event type="preRenderView" listener="#{manageCountriesController.init}" />
         <h1>
             <h:outputText value="#{msgs['manageMovies.title.create']}" rendered="#{(! manageMoviesController.readOnly) and (manageMoviesController.selectedEntity.id == null)}" />
             <h:outputText value="#{msgs['manageMovies.title.update']}" rendered="#{(! manageMoviesController.readOnly) and (manageMoviesController.selectedEntity.id != null)}" />
@@ -40,15 +44,25 @@
         <div class="crud">
             <ui:decorate template="/resources/form.xhtml">
                 <h:form id="form">
+                	
                     <p:hotkey bind="#{msgs['crud.hotkey.focusFirstField']}" handler="findObjectById('form:original_title').focus();" />
 
                     <h:panelGroup id="original_titleField">
-                        <ui:decorate template="/resources/formfield.xhtml">
-                            <ui:param name="fieldName" value="form:original_title" />
+                        <ui:decorate template="/resources/formfieldajax.xhtml">
                             <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.original_title']}" /></ui:define>
-                            <p:inputText id="original_title" value="#{manageMoviesController.selectedEntity.original_title}" size="70" required="true" disabled="#{manageMoviesController.readOnly}">
-                                <p:ajax event="blur" update="original_titleField" />
-                            </p:inputText>
+                            <ui:define name="field">
+                            	<p:autoComplete queryDelay="1000" value="#{manageMoviesController.selectedEntity.original_title}" completeMethod="#{manageMoviesController.getSugestions}" style="float: left" disabled="#{manageMoviesController.readOnly}">
+                                	<p:ajax event="itemSelect" listener="#{manageMoviesController.onItemSelect}" update="@all" />
+                                </p:autoComplete>
+                            </ui:define>
+							<ui:define name="ajax">
+								<p:ajaxStatus>
+									<f:facet name="start">
+										<h:graphicImage alt="#{msgs['text.ajax.loading.alt']}" title="#{msgs['text.ajax.loading']}"
+											url="/resources/templates/default/icons/ajaxstatus-start.gif" />
+									</f:facet>
+								</p:ajaxStatus>
+							</ui:define>
                         </ui:decorate>
                     </h:panelGroup>
 					
@@ -58,6 +72,26 @@
                             <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.portuguese_title']}" /></ui:define>
                             <p:inputText id="portuguese_title" value="#{manageMoviesController.selectedEntity.portuguese_title}" size="70" required="true" disabled="#{manageMoviesController.readOnly}">
                                 <p:ajax event="blur" update="portuguese_titleField" />
+                            </p:inputText>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="imageField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:param name="fieldName" value="form:image" />
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.image']}" /></ui:define>
+                            <p:inputText id="image" value="#{manageMoviesController.selectedEntity.image}" size="70" disabled="#{manageMoviesController.readOnly}">
+                                <p:ajax event="blur" update="imageField" />
+                            </p:inputText>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="lenghtField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:param name="fieldName" value="form:lenght" />
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.lenght']}" /></ui:define>
+                            <p:inputText id="lenght" value="#{manageMoviesController.selectedEntity.lenght}" size="70" disabled="#{manageMoviesController.readOnly}">
+                                <p:ajax event="blur" update="lenghtField" />
                             </p:inputText>
                         </ui:decorate>
                     </h:panelGroup>
@@ -72,42 +106,102 @@
                         </ui:decorate>
                     </h:panelGroup>
                     
-                    
-                    
-                    <h:panelGroup id="isReleaseField">
-                        <ui:decorate template="/resources/formfield.xhtml">
-                            <ui:param name="fieldName" value="form:isRelease" />
-                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.isRelease']}" /></ui:define>
-                            <p:selectBooleanButton id="isRelease" value="#{entity.isRelease}" onLabel="Yes" offLabel="No" style="width:60px" />
+                    <h:panelGroup id="distributionCompaniesField" rendered="#{!manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.distributionCompany']}" /></ui:define>
+                            <p:selectOneMenu id="distributionCompanyOneMenu" value="#{manageMoviesController.selectedEntity.distributionCompany}" collectionType="java.util.ArrayList" converter="#{distributionCompanyConverter}" panelStyle="width:180px" style="width:160px">
+					            <f:selectItems value="#{manageDistributionController.allDistributionCompanies}" var="distributionCompany" itemLabel="#{distributionCompany.name}" itemValue="#{distributionCompany}" />
+					            
+					        </p:selectOneMenu>
                         </ui:decorate>
                     </h:panelGroup>
                     
+                    <h:panelGroup id="distributionCompaniesReadField" rendered="#{manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.distributionCompany']}" /></ui:define>
+                            <p:inputText cols="70"  id="distributionCompanyText" value="#{manageMoviesController.selectedEntity.distributionCompany.name}" disabled="#{manageMoviesController.readOnly}" />
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="countriesField" rendered="#{!manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.countries']}" /></ui:define>
+                            <p:selectManyMenu id="countriesManyMenu" value="#{manageMoviesController.selectedEntity.countries}" style="width:70%;" collectionType="java.util.HashSet" converter="#{countryConverter}" filter="true" filterMatchMode="contains" showCheckbox="true">
+					            <f:selectItems value="#{manageCountriesController.allCountries}" var="country" itemLabel="#{country.name}" itemValue="#{country}" />
+					            
+					        </p:selectManyMenu>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="countriesReadField" rendered="#{manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.countries']}" /></ui:define>
+                            <h:panelGrid id="countries">
+	                            <p:dataList id="countriesList" value="#{manageMoviesController.selectedEntity.countries}" var="country" paginator="true" rows="10" type="ordered" paginatorAlwaysVisible="false">
+							        <p:inputText value="#{country.name}" required="true" disabled="#{manageMoviesController.readOnly}" />
+							    </p:dataList>
+						    </h:panelGrid>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="directorsField" rendered="#{!manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.directors']}" /></ui:define>
+                            <p:selectManyMenu id="directorsManyMenu" value="#{manageMoviesController.selectedEntity.directors}" style="width:70%;" collectionType="java.util.HashSet" converter="#{directorConverter}" filter="true" filterMatchMode="contains" showCheckbox="true">
+					            <f:selectItems value="#{manageDirectorsController.allDirectors}" var="director" itemLabel="#{director.name}" itemValue="#{director}" />
+					            
+					        </p:selectManyMenu>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="directorsReadField" rendered="#{manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.directors']}" /></ui:define>
+                             <h:panelGrid id="directors">
+	                            <p:dataList id="directorsList" value="#{manageMoviesController.selectedEntity.directors}" var="director" type="ordered" paginator="true" rows="10" paginatorAlwaysVisible="false">
+							        <p:inputText value="#{director.name}" required="true" disabled="#{manageMoviesController.readOnly}" />
+							    </p:dataList>
+						    </h:panelGrid>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="actorsField" rendered="#{!manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.actors']}" /></ui:define>
+                            <p:selectManyMenu id="actorsManyMenu" value="#{manageMoviesController.selectedEntity.actors}" style="width:70%;" collectionType="java.util.HashSet" converter="#{actorConverter}" filter="true" filterMatchMode="contains" showCheckbox="true">
+					            <f:selectItems value="#{manageActorsController.allActors}" var="actor" itemLabel="#{actor.name}" itemValue="#{actor}" />
+					            
+					        </p:selectManyMenu>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    <h:panelGroup id="actorsReadField" rendered="#{manageMoviesController.readOnly}">
+                        <ui:decorate template="/resources/formfield-novalidation.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.actors']}" /></ui:define>
+                             <h:panelGrid id="actors">
+	                            <p:dataList id="actorsList" value="#{manageMoviesController.selectedEntity.actors}" type="ordered" var="actor" paginator="true" rows="10" paginatorAlwaysVisible="false">
+							        <p:inputText value="#{actor.name}" required="true" disabled="#{manageMoviesController.readOnly}" />
+							    </p:dataList>
+						    </h:panelGrid>
+                        </ui:decorate>
+                    </h:panelGroup>
+                    
+                    
+                    
+                  
                     <h:panelGroup id="releaseDateField">
                         <ui:decorate template="/resources/formfield.xhtml">
                             <ui:param name="fieldName" value="form:releaseDate" />
                         
                             <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.releaseDate']}" /></ui:define>
-                            <p:inputMask id="releaseDate" mask="99/99/9999" value="#{manageMoviesController.selectedEntity.releaseDate}" size="50" required="true" disabled="#{manageMoviesController.readOnly}">
+                            <p:inputMask id="releaseDate" mask="99/99/9999" value="#{manageMoviesController.selectedEntity.releaseDate}" size="50" required="true" disabled="#{manageMoviesController.readOnly }">
                             	<f:convertDateTime type="date" pattern="#{msgs['format.date.java']}" />
                                 <p:ajax event="blur" update="releaseDateField" />
                             </p:inputMask><h:outputText value=" (#{msgs['format.date.label']})" />
                         </ui:decorate>
                     </h:panelGroup>
                     
-                    
-                    <h:panelGroup id="directorField">
-                        <ui:decorate template="/resources/formfield.xhtml">
-                            <ui:param name="fieldName" value="form:director" />
-                            <ui:define name="label"><h:outputText value="#{msgs['manageMovies.form.director']}" /></ui:define>
-                            <p:selectOneMenu id="director" value="#{manageMoviesController.selectedEntity.director}" style="width:125px" required="true" disabled="#{manageMoviesController.readOnly}">
-					            <f:selectItems value="#{manageDirectorsController.entities}" var="director" itemLabel="#{director.name}" itemValue="#{director.id}"></f:selectItems>
-					        </p:selectOneMenu>
-                        </ui:decorate>
-                    </h:panelGroup>
-                    
-        
-                    
-                    
+              
                     <ui:decorate template="/resources/formbutton.xhtml">
                         <h:panelGroup rendered="#{! manageMoviesController.readOnly}">
                             <p:commandButton action="#{manageMoviesController.list}" value="#{msgs['crud.button.cancel']}" immediate="true" icon="buttonCancel" />

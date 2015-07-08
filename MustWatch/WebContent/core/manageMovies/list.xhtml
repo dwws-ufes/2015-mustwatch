@@ -1,164 +1,233 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                template="/resources/decorator.xhtml">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/resources/decorator.xhtml">
 
-    <ui:define name="title"><h:outputText value="#{msgs['manageMovies.title']}" /></ui:define>
+	<ui:define name="title">
+		<h:outputText value="#{msgs['manageMovies.title']}" />
+	</ui:define>
 
 	<ui:define name="submenu">
-    <div id="sub-navigation">
-		<ul>
-		    <li><a href="/MustWatch/core/manageActors/list.faces">Actors</a></li>
-		    <li><a href="/MustWatch/core/manageMovies/list.faces">Movies</a></li>
-		    <li><a href="/MustWatch/core/manageDirectors/list.faces">Directors</a></li>
-		    <li><a href="/MustWatch/core/manageDistributionCompanies/list.faces">Distribution Companies</a></li>
-		    <li><a href="/MustWatch/core/manageUsers/list.faces">Users</a></li>
-		</ul>
-		<div class="cl">&nbsp;</div>
-	</div>
-	<!-- end Sub-Menu -->
-    </ui:define>
-    
-    <ui:define name="body">
-        <h1><h:outputText value="#{msgs['manageMovies.title']}" /></h1>
+		<div id="sub-navigation">
+			<ul>
+				<li><a href="/MustWatch/core/manageActors/list.faces">Actors</a></li>
+				<li><a href="/MustWatch/core/manageMovies/list.faces">Movies</a></li>
+				<li><a href="/MustWatch/core/manageDirectors/list.faces">Directors</a></li>
+				<li><a
+					href="/MustWatch/core/manageDistributionCompanies/list.faces">Distribution
+						Companies</a></li>
+				<li><a href="/MustWatch/core/manageUsers/list.faces">Users</a></li>
+			</ul>
+			<div class="cl">&nbsp;</div>
+		</div>
+		<!-- end Sub-Menu -->
+	</ui:define>
 
-        <div class="crud">
-            <!-- Filter bar: used to filter the listing (displayed when there is at least one filter available). -->
-            <h:form id="filterForm">
-                <h:panelGroup id="filterBar" rendered="#{(not empty manageMoviesController.filters)}">
-                    <div class="crudFilterBar">
-                        <h:outputText value="#{msgs['crud.text.filter']} " />
-                        <p:selectOneMenu id="filter" required="true" value="#{manageMoviesController.filterKey}">
-                            <f:selectItems value="#{manageMoviesController.filters}" var="filter" itemLabel="#{filter.label}" itemValue="#{filter.key}" />
-                            <f:ajax event="change" execute="@form" listener="#{manageMoviesController.changeFilter}" render="@form :listingForm :buttonsForm" />
-                        </p:selectOneMenu>
-                        <h:outputText value=": " />
-                        <p:inputText id="filterText" size="20" required="false" value="#{manageMoviesController.filterParam}" rendered="#{manageMoviesController.filter.options == null}" />
-                        <p:selectOneMenu id="filterSelect" required="false" value="#{manageMoviesController.filterParam}" rendered="#{manageMoviesController.filter.options != null}">
-                            <f:selectItems value="#{manageMoviesController.filter.reversedOptionsLabels}" />
-                        </p:selectOneMenu>
-                        <p:commandLink action="#{manageMoviesController.filter}" process="@form" update=":listingForm :buttonsForm">
-                            <h:graphicImage style="border: 0;" value="/resources/templates/default/icons/button-find.png" title="#{msgs['crud.button.filter']}" />
-                        </p:commandLink>
-                        <p:hotkey bind="#{msgs['crud.hotkey.filterFocus']}" handler="if (findObjectById('filterForm:filterText') != null) findObjectById('filterForm:filterText').focus(); else findObjectById('filterForm:filterSelect').focus();" />
-                    </div>
-                </h:panelGroup>
-            </h:form>
+	<ui:define name="body">
+		<h1>
+			<h:outputText value="#{msgs['manageMovies.title']}" />
+		</h1>
 
-            <!-- The listing form. -->
-            <h:form id="listingForm">
-                <!-- Filter information (displayed when the listing is being filtered. -->
-                <h:panelGroup id="filterInfo" rendered="#{manageMoviesController.filtering}">
-                    <div class="crudFilterInfo">
-                        <h:outputFormat value="#{msgs['crud.text.filterInfo']} ">
-                            <f:param value="#{manageMoviesController.filter.label}" />
-                            <f:param value="#{manageMoviesController.filterLabel}" />
-                        </h:outputFormat>
-                        <p:commandLink action="#{manageMoviesController.cancelFilter}" process="@form" update="@form :buttonsForm">
-                            <h:graphicImage style="border: 0;" value="/resources/templates/default/icons/button-close.png" title="#{msgs['crud.button.cancelFilter']}" />
-                        </p:commandLink>
-                        <p:hotkey bind="#{msgs['crud.hotkey.clearFilter']}" action="#{manageMoviesController.cancelFilter}" process="@form" update=":listingForm :buttonsForm" />
-                    </div>
-                </h:panelGroup>
+		<div class="crud">
+			<!-- Filter bar: used to filter the listing (displayed when there is at least one filter available). -->
+			<h:form id="filterForm">
+				<h:panelGroup id="filterBar"
+					rendered="#{(not empty manageMoviesController.filters)}">
+					<div class="crudFilterBar">
+						<h:outputText value="#{msgs['crud.text.filter']} " />
+						<p:selectOneMenu id="filter" required="true"
+							value="#{manageMoviesController.filterKey}">
+							<f:selectItems value="#{manageMoviesController.filters}"
+								var="filter" itemLabel="#{filter.label}"
+								itemValue="#{filter.key}" />
+							<f:ajax event="change" execute="@form"
+								listener="#{manageMoviesController.changeFilter}"
+								render="@form :listingForm :buttonsForm" />
+						</p:selectOneMenu>
+						<h:outputText value=": " />
+						<p:inputText id="filterText" size="20" required="false"
+							value="#{manageMoviesController.filterParam}"
+							rendered="#{manageMoviesController.filter.options == null}" />
+						<p:selectOneMenu id="filterSelect" required="false"
+							value="#{manageMoviesController.filterParam}"
+							rendered="#{manageMoviesController.filter.options != null}">
+							<f:selectItems
+								value="#{manageMoviesController.filter.reversedOptionsLabels}" />
+						</p:selectOneMenu>
+						<p:commandLink action="#{manageMoviesController.filter}"
+							process="@form" update=":listingForm :buttonsForm">
+							<h:graphicImage style="border: 0;"
+								value="/resources/templates/default/icons/button-find.png"
+								title="#{msgs['crud.button.filter']}" />
+						</p:commandLink>
+						<p:hotkey bind="#{msgs['crud.hotkey.filterFocus']}"
+							handler="if (findObjectById('filterForm:filterText') != null) findObjectById('filterForm:filterText').focus(); else findObjectById('filterForm:filterSelect').focus();" />
+					</div>
+				</h:panelGroup>
+			</h:form>
 
-                <!-- The list of entities. -->
-                <h:panelGroup id="listing" styleClass="listing">
-                    <p:dataTable
-                        widgetVar="listingTable"
-                        value="#{manageMoviesController.lazyEntities}" 
-                        var="entity" 
-                        rows="#{manageMoviesController.maxDataTableRowsPerPage}" 
-                        rowsPerPageTemplate="#{manageMoviesController.halfMaxDataTableRowsPerPage},#{manageMoviesController.maxDataTableRowsPerPage},#{manageMoviesController.doubleMaxDataTableRowsPerPage}"
-                        lazy="true" 
-                        paginator="true" 
-                        selection="#{manageMoviesController.selectedEntity}" 
-                        selectionMode="single" 
-                        paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" 
-                        paginatorPosition="bottom" 
-                        loadingMessage="#{msgs['text.ajax.loading']}" 
-                        emptyMessage="#{manageMoviesController.filtering ? msgs['manageMovies.text.noEntitiesFiltered'] : msgs['manageMovies.text.noEntities']}">
+			<!-- The listing form. -->
+			<h:form id="listingForm">
+				<!-- Filter information (displayed when the listing is being filtered. -->
+				<h:panelGroup id="filterInfo"
+					rendered="#{manageMoviesController.filtering}">
+					<div class="crudFilterInfo">
+						<h:outputFormat value="#{msgs['crud.text.filterInfo']} ">
+							<f:param value="#{manageMoviesController.filter.label}" />
+							<f:param value="#{manageMoviesController.filterLabel}" />
+						</h:outputFormat>
+						<p:commandLink action="#{manageMoviesController.cancelFilter}"
+							process="@form" update="@form :buttonsForm">
+							<h:graphicImage style="border: 0;"
+								value="/resources/templates/default/icons/button-close.png"
+								title="#{msgs['crud.button.cancelFilter']}" />
+						</p:commandLink>
+						<p:hotkey bind="#{msgs['crud.hotkey.clearFilter']}"
+							action="#{manageMoviesController.cancelFilter}" process="@form"
+							update=":listingForm :buttonsForm" />
+					</div>
+				</h:panelGroup>
 
-                        <p:column headerText="#{msgs['manageMovies.form.original_title']}">
-                            <h:outputText value="#{entity.original_title}" />
-                        </p:column>
-                        
-                        <p:column headerText="#{msgs['manageMovies.form.portuguese_title']}">
-                            <h:outputText value="#{entity.portuguese_title}" />
-                        </p:column>
-                        
-                        <p:column headerText="#{msgs['manageMovies.form.lenght']}">
-                            <h:outputText value="#{entity.lenght} minutes" />
-                        </p:column>
+				<!-- The list of entities. -->
+				<h:panelGroup id="listing" styleClass="listing">
+
+					<div>
+						<a style="float: right;"
+							href="#{facesContext.externalContext.requestContextPath}/data/Movies">RDF/XML</a>
+					</div>
+
+
+					<p:dataTable widgetVar="listingTable"
+						value="#{manageMoviesController.lazyEntities}" var="entity"
+						rows="#{manageMoviesController.maxDataTableRowsPerPage}"
+						rowsPerPageTemplate="#{manageMoviesController.halfMaxDataTableRowsPerPage},#{manageMoviesController.maxDataTableRowsPerPage},#{manageMoviesController.doubleMaxDataTableRowsPerPage}"
+						lazy="true" paginator="true"
+						selection="#{manageMoviesController.selectedEntity}"
+						selectionMode="single"
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+						paginatorPosition="bottom"
+						loadingMessage="#{msgs['text.ajax.loading']}"
+						emptyMessage="#{manageMoviesController.filtering ? msgs['manageMovies.text.noEntitiesFiltered'] : msgs['manageMovies.text.noEntities']}">
+
+						<p:column headerText="#{msgs['manageMovies.form.original_title']}">
+							<h:outputText value="#{entity.original_title}" />
+						</p:column>
+
+						<p:column
+							headerText="#{msgs['manageMovies.form.portuguese_title']}">
+							<h:outputText value="#{entity.portuguese_title}" />
+						</p:column>
+
+						<p:column headerText="#{msgs['manageMovies.form.lenght']}">
+							<h:outputText value="#{entity.lenght} minutes" />
+						</p:column>
 
 						<p:column headerText="#{msgs['manageMovies.form.releaseDate']}">
-                            <h:outputText value="#{entity.releaseDate}" />
-                        </p:column>
-                        
-                        <p:column headerText="#{msgs['manageMovies.form.director']}">
-                            <h:outputText value="#{entity.director.name}" />
-                        </p:column>
-                        
-                        <p:column headerText="#{msgs['manageMovies.form.distributionCompany']}">
-                            <h:outputText value="#{entity.distributionCompany.name}" />
-                        </p:column>
-                        
-                        <p:ajax event="rowSelect" update=":buttonsForm" />
-                    </p:dataTable>
-                    <p:hotkey bind="ctrl+left" handler="goToFirstPage(listingTable);" />
-                    <p:hotkey bind="left" handler="goToPreviousPage(listingTable);" />
-                    <p:hotkey bind="right" handler="goToNextPage(listingTable);" />
-                    <p:hotkey bind="ctrl+right" handler="goToLastPage(listingTable);" />
-                </h:panelGroup>
-            </h:form>
+							<h:outputText value="#{entity.releaseDate}" />
+						</p:column>
 
-            <!-- Buttons shown below the listing. -->
-            <h:form id="buttonsForm">
-                <div class="crudButtons">
-                    <p:commandButton action="#{manageMoviesController.create}" value="#{msgs['crud.button.create']}" icon="buttonNew" />
-                    <p:commandButton action="#{manageMoviesController.retrieve}" value="#{msgs['crud.button.retrieve']}" icon="buttonView" disabled="#{manageMoviesController.selectedEntity == null}" />
-                    <p:commandButton action="#{manageMoviesController.update}" value="#{msgs['crud.button.update']}" icon="buttonEdit" disabled="#{manageMoviesController.selectedEntity == null}" />
-                    <p:commandButton action="#{manageMoviesController.trash}" value="#{msgs['crud.button.delete']}" icon="buttonTrash" disabled="#{manageMoviesController.selectedEntity == null}" process="@this" update=":trashForm" />
-                    <p:hotkey bind="#{msgs['crud.hotkey.create']}" action="#{manageMoviesController.create}" />
-                    <p:hotkey bind="#{msgs['crud.hotkey.retrieve']}" action="#{manageMoviesController.retrieve}" rendered="#{manageMoviesController.selectedEntity != null}" />
-                    <p:hotkey bind="#{msgs['crud.hotkey.update']}" action="#{manageMoviesController.update}" rendered="#{manageMoviesController.selectedEntity != null}" />
-                    <p:hotkey bind="#{msgs['crud.hotkey.delete']}" action="#{manageMoviesController.trash}" rendered="#{manageMoviesController.selectedEntity != null}" process="@this" update=":trashForm" />
-                </div>
-            </h:form>
+						<p:column
+							headerText="#{msgs['manageMovies.form.distributionCompany']}">
+							<h:outputText value="#{entity.distributionCompany.name}" />
+						</p:column>
 
-            <!-- The trash panel: shows entities that have been selected for deletion. -->
-            <h:form id="trashForm">
-                <p:panel id="trashPanel" styleClass="trashPanel" header="#{msgs['crud.text.trashHeader']}" toggleable="true" rendered="#{not empty manageMoviesController.trashCan}">
-                    <p:dataList value="#{manageMoviesController.trashCan}" var="entity" type="unordered">
+						<p:ajax event="rowSelect" update=":buttonsForm" />
+					</p:dataTable>
+					<p:hotkey bind="ctrl+left" handler="goToFirstPage(listingTable);" />
+					<p:hotkey bind="left" handler="goToPreviousPage(listingTable);" />
+					<p:hotkey bind="right" handler="goToNextPage(listingTable);" />
+					<p:hotkey bind="ctrl+right" handler="goToLastPage(listingTable);" />
+				</h:panelGroup>
+			</h:form>
+
+			<!-- Buttons shown below the listing. -->
+			<h:form id="buttonsForm">
+				<div class="crudButtons">
+					<p:commandButton action="#{manageMoviesController.create}"
+						value="#{msgs['crud.button.create']}" icon="buttonNew" />
+					<p:commandButton action="#{manageMoviesController.retrieve}"
+						value="#{msgs['crud.button.retrieve']}" icon="buttonView"
+						disabled="#{manageMoviesController.selectedEntity == null}" />
+					<p:commandButton action="#{manageMoviesController.update}"
+						value="#{msgs['crud.button.update']}" icon="buttonEdit"
+						disabled="#{manageMoviesController.selectedEntity == null}" />
+					<p:commandButton action="#{manageMoviesController.trash}"
+						value="#{msgs['crud.button.delete']}" icon="buttonTrash"
+						disabled="#{manageMoviesController.selectedEntity == null}"
+						process="@this" update=":trashForm" />
+					<p:hotkey bind="#{msgs['crud.hotkey.create']}"
+						action="#{manageMoviesController.create}" />
+					<p:hotkey bind="#{msgs['crud.hotkey.retrieve']}"
+						action="#{manageMoviesController.retrieve}"
+						rendered="#{manageMoviesController.selectedEntity != null}" />
+					<p:hotkey bind="#{msgs['crud.hotkey.update']}"
+						action="#{manageMoviesController.update}"
+						rendered="#{manageMoviesController.selectedEntity != null}" />
+					<p:hotkey bind="#{msgs['crud.hotkey.delete']}"
+						action="#{manageMoviesController.trash}"
+						rendered="#{manageMoviesController.selectedEntity != null}"
+						process="@this" update=":trashForm" />
+				</div>
+			</h:form>
+
+			<!-- The trash panel: shows entities that have been selected for deletion. -->
+			<h:form id="trashForm">
+				<p:panel id="trashPanel" styleClass="trashPanel"
+					header="#{msgs['crud.text.trashHeader']}" toggleable="true"
+					rendered="#{not empty manageMoviesController.trashCan}">
+					<p:dataList value="#{manageMoviesController.trashCan}" var="entity"
+						type="unordered">
                         #{entity.original_title}
                     </p:dataList>
-                    <div class="nemoUtilsFormInternalButton">
-                        <p:commandButton action="#{manageMoviesController.cancelDeletion}" value="#{msgs['crud.button.cancelDeletion']}" icon="buttonCancel" update=":trashForm :buttonsForm :listingForm" />
-                        <p:commandButton action="#{manageMoviesController.delete}" value="#{msgs['crud.button.confirmDeletion']}" icon="buttonOk" />
-                        <p:hotkey bind="#{msgs['crud.hotkey.cancelDeletion']}" action="#{manageMoviesController.cancelDeletion}" update=":trashForm :buttonsForm :listingForm" />
-                        <p:hotkey bind="#{msgs['crud.hotkey.confirmDeletion']}" action="#{manageMoviesController.delete}" />
-                    </div>
-                </p:panel>
-            </h:form>
-        </div>
+					<div class="nemoUtilsFormInternalButton">
+						<p:commandButton action="#{manageMoviesController.cancelDeletion}"
+							value="#{msgs['crud.button.cancelDeletion']}" icon="buttonCancel"
+							update=":trashForm :buttonsForm :listingForm" />
+						<p:commandButton action="#{manageMoviesController.delete}"
+							value="#{msgs['crud.button.confirmDeletion']}" icon="buttonOk" />
+						<p:hotkey bind="#{msgs['crud.hotkey.cancelDeletion']}"
+							action="#{manageMoviesController.cancelDeletion}"
+							update=":trashForm :buttonsForm :listingForm" />
+						<p:hotkey bind="#{msgs['crud.hotkey.confirmDeletion']}"
+							action="#{manageMoviesController.delete}" />
+					</div>
+				</p:panel>
+			</h:form>
+		</div>
 
-        <p>&nbsp;</p>
+		<p>&nbsp;</p>
 
-    </ui:define>
+	</ui:define>
 
-    <ui:define name="help">
-        <h4><h:outputText value="#{msgs['text.hotkeys']}" />:</h4>
-        <ul>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.filterFocus']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.filterFocus']}" />;</li>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.clearFilter']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.clearFilter']}" />;</li>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.create']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.create']}" />;</li>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.retrieve']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.retrieve']}" />;</li>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.update']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.update']}" />;</li>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.delete']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.delete']}" />;</li>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.cancelDeletion']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.cancelDeletion']}" />;</li>
-            <li><b><h:outputText value="#{msgs['crud.hotkey.confirmDeletion']}" /></b>: <h:outputText value="#{msgs['crud.help.hotkeys.confirmDeletion']}" />.</li>
-        </ul>
-    </ui:define>
+	<ui:define name="help">
+		<h4>
+			<h:outputText value="#{msgs['text.hotkeys']}" />
+			:
+		</h4>
+		<ul>
+			<li><b><h:outputText
+						value="#{msgs['crud.hotkey.filterFocus']}" /></b>: <h:outputText
+					value="#{msgs['crud.help.hotkeys.filterFocus']}" />;</li>
+			<li><b><h:outputText
+						value="#{msgs['crud.hotkey.clearFilter']}" /></b>: <h:outputText
+					value="#{msgs['crud.help.hotkeys.clearFilter']}" />;</li>
+			<li><b><h:outputText value="#{msgs['crud.hotkey.create']}" /></b>:
+				<h:outputText value="#{msgs['crud.help.hotkeys.create']}" />;</li>
+			<li><b><h:outputText value="#{msgs['crud.hotkey.retrieve']}" /></b>:
+				<h:outputText value="#{msgs['crud.help.hotkeys.retrieve']}" />;</li>
+			<li><b><h:outputText value="#{msgs['crud.hotkey.update']}" /></b>:
+				<h:outputText value="#{msgs['crud.help.hotkeys.update']}" />;</li>
+			<li><b><h:outputText value="#{msgs['crud.hotkey.delete']}" /></b>:
+				<h:outputText value="#{msgs['crud.help.hotkeys.delete']}" />;</li>
+			<li><b><h:outputText
+						value="#{msgs['crud.hotkey.cancelDeletion']}" /></b>: <h:outputText
+					value="#{msgs['crud.help.hotkeys.cancelDeletion']}" />;</li>
+			<li><b><h:outputText
+						value="#{msgs['crud.hotkey.confirmDeletion']}" /></b>: <h:outputText
+					value="#{msgs['crud.help.hotkeys.confirmDeletion']}" />.</li>
+		</ul>
+	</ui:define>
 </ui:composition>

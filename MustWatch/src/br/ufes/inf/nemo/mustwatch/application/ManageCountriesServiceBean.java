@@ -28,5 +28,10 @@ public class ManageCountriesServiceBean extends CrudServiceBean<Country> impleme
 		// TODO Auto-generated method stub
 		return new Country();
 	}
+	
+	@Override
+	public void saveTome(Country country){
+		countryDAO.save(country);
+	}
 
 }

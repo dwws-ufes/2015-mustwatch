@@ -7,5 +7,5 @@ import br.ufes.inf.nemo.util.ejb3.persistence.BaseDAO;
 
 @Local
 public interface UserDAO extends BaseDAO<User> {
-
+	public User retrieveByLogin(String login);
 }

@@ -1,9 +1,11 @@
 package br.ufes.inf.nemo.mustwatch.controller;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import br.ufes.inf.nemo.mustwatch.application.ManageUsersService;
@@ -20,9 +22,14 @@ public class ManageUsersController extends CrudController<User> {
 
 	@EJB 
 	ManageUsersService manageUsersService;
+	private User user;
 	private String password1;
 	private Date birthDate;
 	private String sex;
+	private String login;
+	private String cpf;
+	private String name;
+	private String email;
 	
 	public ManageUsersController() {
 	    viewPath = "/core/manageUsers/";
@@ -69,6 +76,57 @@ public class ManageUsersController extends CrudController<User> {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
+	public void init(){
+		user = null;
+	}
 	
+	public void redirectToLogin() throws IOException{
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/MustWatch/login.faces");
+	}
+	
+	public void saveAndRedirect() throws IOException{
+		save();
+		FacesContext.getCurrentInstance().getExternalContext().redirect("/MustWatch/index.faces");
+	}
 }

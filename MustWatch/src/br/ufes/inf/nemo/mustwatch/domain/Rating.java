@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.ufes.inf.nemo.util.ejb3.persistence.PersistentObjectSupport;
@@ -17,26 +19,33 @@ public class Rating extends PersistentObjectSupport  implements Comparable<Ratin
 	private static final long serialVersionUID = 1L;
 	
 	
-	@Basic
-	@Size(max = 300)
+	
 	@Column(nullable = true) 
 	private String comment;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="OWNER_ID")
-	private Movie owner;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@NotNull
+	private Movie movie;
 	
-	public Movie getOwner() {
-		return owner;
+	
+
+
+
+	public Movie getMovie() {
+		return movie;
 	}
 
-	public void setOwner(Movie owner) {
-		this.owner = owner;
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
+
+	public void setValue(Integer value) {
+		this.value = value;
 	}
 
 
 
-	@Basic
+	
 	private Integer value;
 	
 	

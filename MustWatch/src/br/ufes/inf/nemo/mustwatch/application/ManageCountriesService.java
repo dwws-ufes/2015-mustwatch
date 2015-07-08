@@ -7,5 +7,5 @@ import br.ufes.inf.nemo.util.ejb3.application.CrudService;
 
 @Local
 public interface ManageCountriesService extends CrudService<Country> {
-
+	public void saveTome(Country country);
 }

@@ -15,13 +15,7 @@
 
 	  <ui:define name="submenu">
     <div id="sub-navigation">
-		<ul>
-		    <li><a href="/MustWatch/core/manageActors/list.faces">Actors</a></li>
-		    <li><a href="/MustWatch/core/manageMovies/list.faces">Movies</a></li>
-		    <li><a href="/MustWatch/core/manageDirectors/list.faces">Directors</a></li>
-		    <li><a href="/MustWatch/core/manageDistributionCompanies/list.faces">Distribution Companies</a></li>
-		    <li><a href="/MustWatch/core/manageUsers/list.faces">Users</a></li>
-		</ul>
+		
 		<div class="cl">&nbsp;</div>
 	</div>
 	<!-- end Sub-Menu -->
@@ -95,6 +89,15 @@
                         </ui:decorate>
                     </h:panelGroup>
 
+
+					<h:panelGroup id="loginField">
+                        <ui:decorate template="/resources/formfield.xhtml">
+                            <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.login']}" /></ui:define>
+                            <h:inputText id="login" value="#{manageUsersController.selectedEntity.login}" size="32" required="true" disabled="#{manageUsersController.readOnly}"   />
+                        </ui:decorate>
+                    </h:panelGroup>
+
+
 					<h:panelGroup id="passwordField">
                         <ui:decorate template="/resources/formfield.xhtml">
                             <ui:define name="label"><h:outputText value="#{msgs['manageUsers.form.password']}" /></ui:define>
@@ -104,8 +107,8 @@
 
                     <ui:decorate template="/resources/formbutton.xhtml">
                         <h:panelGroup rendered="#{! manageUsersController.readOnly}">
-                            <p:commandButton action="#{manageUsersController.list}" value="#{msgs['crud.button.cancel']}" immediate="true" icon="buttonCancel" />
-                            <p:commandButton action="#{manageUsersController.save}" value="#{msgs['crud.button.save']}" icon="buttonOk" />
+                            <p:commandButton action="#{manageUsersController.redirectToLogin}" value="#{msgs['crud.button.cancel']}" immediate="true" icon="buttonCancel" />
+                            <p:commandButton action="#{manageUsersController.saveAndRedirect}" value="#{msgs['crud.button.save']}" icon="buttonOk" />
          
                         </h:panelGroup>
                         <h:panelGroup rendered="#{manageUsersController.readOnly}">

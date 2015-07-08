@@ -2,7 +2,6 @@ package br.ufes.inf.nemo.mustwatch.domain;
 
 import java.util.Date;
 
-import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
@@ -24,5 +23,5 @@ public class User_ extends PersistentObjectSupport_ {
 		
 	public static volatile SingularAttribute<User,Boolean> isAdmin;
 
-//	public static volatile SetAttribute<User, Rating> ratings;
+	public static volatile SingularAttribute<User, String> login;
 }

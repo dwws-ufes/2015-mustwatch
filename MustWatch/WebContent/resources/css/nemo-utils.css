@@ -103,6 +103,7 @@ div.nemoUtilsForm div.nemoUtilsFormField div.label {
 div.nemoUtilsForm div.nemoUtilsFormField div.field {
 	float: right;
 	width: 72%;
+	color: #000000;
 	border-left: 5px solid white;
 	padding: 5px 7px 5px 7px;
 }

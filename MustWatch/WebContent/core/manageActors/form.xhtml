@@ -39,14 +39,24 @@
                     <p:hotkey bind="#{msgs['crud.hotkey.focusFirstField']}" handler="findObjectById('form:name').focus();" />
 
                     <h:panelGroup id="nameField">
-                        <ui:decorate template="/resources/formfield.xhtml">
-                            <ui:param name="fieldName" value="form:name" />
+                        <ui:decorate template="/resources/formfieldajax.xhtml">
                             <ui:define name="label"><h:outputText value="#{msgs['manageActors.form.name']}" /></ui:define>
-                            <p:inputText id="name" value="#{manageActorsController.selectedEntity.name}" size="50" required="true" disabled="#{manageActorsController.readOnly}">
-                                <p:ajax event="blur" update="nameField" />
-                            </p:inputText>
+                            <ui:define name="field">
+                            	<p:autoComplete queryDelay="1000" value="#{manageActorsController.selectedEntity.name}" completeMethod="#{manageActorsController.getSugestions}" style="float: left" disabled="#{manageActorsController.readOnly}">
+                                	
+                                </p:autoComplete>
+                            </ui:define>
+							<ui:define name="ajax">
+								<p:ajaxStatus>
+									<f:facet name="start">
+										<h:graphicImage alt="#{msgs['text.ajax.loading.alt']}" title="#{msgs['text.ajax.loading']}"
+											url="/resources/templates/default/icons/ajaxstatus-start.gif" />
+									</f:facet>
+								</p:ajaxStatus>
+							</ui:define>
                         </ui:decorate>
                     </h:panelGroup>
+                    
                  <ui:decorate template="/resources/formbutton.xhtml">
                         <h:panelGroup rendered="#{! manageActorsController.readOnly}">
                             <p:commandButton action="#{manageActorsController.list}" value="#{msgs['crud.button.cancel']}" immediate="true" icon="buttonCancel" />

@@ -1,10 +1,12 @@
 package br.ufes.inf.nemo.mustwatch.domain;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -22,7 +24,7 @@ public class Actor extends PersistentObjectSupport implements Comparable<Actor>{
 	@Size(max = 200)
 	private String name;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "actors", fetch = FetchType.EAGER)
 	private Set<Movie> movies;
 	
 	public String getName() {
@@ -38,6 +40,10 @@ public class Actor extends PersistentObjectSupport implements Comparable<Actor>{
 		return 0;
 	}
 	
+	
+
+	
+
 	public Set<Movie> getMovies() {
 		return movies;
 	}

@@ -1,5 +1,7 @@
 package br.ufes.inf.nemo.mustwatch.controller;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -15,14 +17,18 @@ import br.ufes.inf.nemo.util.ejb3.controller.CrudController;
 public class ManageCountriesControler extends CrudController<Country>{
 	/** Serialization id. */
 	private static final long serialVersionUID = 1L;
-
+	private List<Country> allCountries;
 	@EJB
-	ManageCountriesService manageCountryService;
+	ManageCountriesService manageCountriesService;
 
+	public void init() {
+		allCountries = manageCountriesService.getDAO().retrieveAll();
+    }
+	
 	@Override
 	protected CrudService<Country> getCrudService() {
 		// TODO Auto-generated method stub
-		return manageCountryService;
+		return manageCountriesService;
 	}
 
 	@Override
@@ -36,11 +42,20 @@ public class ManageCountriesControler extends CrudController<Country>{
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 
 	public ManageCountriesControler(){
 		viewPath = "/core/managecountries/";
 	    bundleName = "msgs";
+	}
+
+	public List<Country> getAllCountries() {
+		return allCountries;
+	}
+
+	public void setAllCountries(List<Country> allCountries) {
+		this.allCountries = allCountries;
 	}
 
 }

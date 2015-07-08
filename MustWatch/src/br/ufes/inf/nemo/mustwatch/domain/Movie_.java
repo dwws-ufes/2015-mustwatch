@@ -15,12 +15,12 @@ public class Movie_ extends PersistentObjectSupport_ {
 	public static volatile SingularAttribute<Movie, String> portuguese_title;
 	public static volatile SingularAttribute<Movie, String> resume;
 	public static volatile SingularAttribute<Movie, Integer> lenght;
-	public static volatile SingularAttribute<Movie, Integer> isRelease;
 	public static volatile SingularAttribute<Movie, DistributionCompany> distributionCompany;
-	public static volatile SingularAttribute<Movie, Director> director;
+	
 	public static volatile SingularAttribute<Movie, String> image;
 	public static volatile SingularAttribute<Movie, Date> releaseDate;
 
+	public static volatile SetAttribute<Movie, Director> directors;
 	public static volatile SetAttribute<Movie, Rating> ratings;
 	public static volatile SetAttribute<Movie, Country> countries;
 	public static volatile SetAttribute<Movie, Actor> actors;
